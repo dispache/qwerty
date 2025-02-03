@@ -1,6 +1,5 @@
 .header__block {
-    background-color: #fef5e7;
-    position: fixed;
+    background-color: #d5d8dc;
     display: grid;
     grid-template-columns: 50% 50%;
     grid-template-areas: "logo auth";
@@ -22,7 +21,7 @@
     font-weight: 800;
     font-size: 32px;
     position: relative;
-    left: 20%;
+    left: 13%;
     top: 15%;
 }
 
