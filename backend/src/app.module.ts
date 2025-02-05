@@ -3,6 +3,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { CategoriesModule } from './categories/categories.module';
+import { ArticlesModule } from './articles/articles.module';
 
 
 @Module({
@@ -21,7 +23,9 @@ import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
         password: configService.get('DATABASE_PASSWORD') 
       } as TypeOrmModuleOptions),
       inject: [ConfigService]
-    })
+    }),
+    CategoriesModule,
+    ArticlesModule
   ],
   controllers: [AppController],
   providers: [AppService],
