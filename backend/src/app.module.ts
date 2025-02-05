@@ -3,10 +3,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { CategoriesController } from './categories/categories.controller';
-import { CategoriesService } from './categories/categories.service';
 import { CategoriesModule } from './categories/categories.module';
-import { CategoriesRepository } from './categories/categories.repository';
+import { ArticlesModule } from './articles/articles.module';
 
 
 @Module({
@@ -26,9 +24,10 @@ import { CategoriesRepository } from './categories/categories.repository';
       } as TypeOrmModuleOptions),
       inject: [ConfigService]
     }),
-    CategoriesModule
+    CategoriesModule,
+    ArticlesModule
   ],
-  controllers: [AppController, CategoriesController],
-  providers: [AppService, CategoriesService, CategoriesRepository],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
