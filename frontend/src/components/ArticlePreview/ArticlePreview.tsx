@@ -1,6 +1,6 @@
 import './ArticlePreview.css';
 
-import { Avatar } from '@mui/material';
+import { Avatar } from "@mui/material";
 
 type ArticlePreviewProps = {
     title: string;
@@ -12,22 +12,24 @@ type ArticlePreviewProps = {
     createdAt: string;
 };
 
-function ArticlePreview({ title, category, createdAt }: ArticlePreviewProps) {
+function ArticlePreview({ title, author, category, createdAt } : ArticlePreviewProps) {
     return (
-        <div className="article-preview__block">
-            <div className="article-preview_author">
-                <div>
-                    <Avatar 
-                        alt="Remy Sharp" 
-                    />
-                </div>
+        <div className='main-articles_article'>
+            <div className='main-articles_article-author'>
+                <Avatar 
+                    alt='Remy Sharp' 
+                    className='main-articles_article-author_image'
+                ></Avatar>
+                <span className='main-articles_article-author_login'>
+                    {author.login}
+                </span>
             </div>
-            <div className="article-preview_main">
-                <div className="article-preview_main-title">{title.length > 40 ? title + '...' : title}</div>
+            <div className='main-articles_article-title'>
+                {title}
             </div>
-            <div className="article-preview_info">
-                <div className="article-preview_info-category">{category}</div>
-                <div className='article-preview_info-created_at'>{createdAt}</div>
+            <div className='main-articles_article-info'>
+                <div className='main-articles_article-info_category'>{category}</div>
+                <div>{createdAt}</div>
             </div>
         </div>
     );

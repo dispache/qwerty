@@ -6,7 +6,6 @@
 
 .home__block-left_sidebar {
     grid-area: left_sidebar;
-    border-right: 1px solid grey;
     height: 100vh;
 }
 
@@ -39,9 +38,22 @@
     grid-area: main;
 }
 
+.main-articles {
+    padding-top: 25px;
+    padding-left: 25px;
+    padding-right: 25px;
+    border-left: 1px solid grey;
+    border-right: 1px solid grey;
+    height: 100%;
+}
+
+.main-articles-pagination {
+    display: flex;
+    justify-content: center;
+}
+
 .home__block-right_sidebar {
     grid-area: right_sidebar;
-    border-left: 1px solid grey;
     height: 100vh;
 }
 

@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import './Home.css';
-import ArticlePreview from '../../components/ArticlePreview/ArticlePreview';
-import { Button, ButtonProps } from '@mui/material';
+import LastArticlePreview from '../../components/LastArticlePreview/LastArticlePreview';
+import { Button, ButtonProps, Pagination } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import * as colors from '@mui/material/colors';
+import ArticlePreview from '../../components/ArticlePreview/ArticlePreview';
 
 function Home() {
 
@@ -69,6 +70,22 @@ function Home() {
             name: 'Technologies'
         }
     ]);
+    const [articles, setArticles] = useState<any[]>([]);
+    const [paginationTotalCount, setPaginationTotalCount] = useState<number>(0);
+
+    useEffect(() => {
+        const data: any[] = new Array(20).fill({
+            title: "Last article's title and here we are hello world so",
+            author: {
+                image: 'image',
+                login: 'user_login'
+            },
+            category: 'Sport',
+            createdAt: '2025-02-03'
+        }, 0, 20);
+        setArticles(data);
+        setPaginationTotalCount(data.length / 10);
+    }, []);
 
     const muiColors: any[] = Object.values(colors);
 
@@ -101,12 +118,21 @@ function Home() {
                     </ul>
                 </div>
             </div>
-            <div className='home__block-main'>Home page content</div>
+            <div className='home__block-main'>
+                <div className='main-articles'>
+                        {
+                            articles.slice(0, 10).map(article => <ArticlePreview {...article} />)
+                        }
+                </div>
+                <div className='main-articles-pagination'>
+                        <Pagination count={paginationTotalCount}/>
+                </div>
+            </div>
             <div className='home__block-right_sidebar'>
                 <div className='right_sidebar-last_articles'>
                     <span className='right_sidebar-last_articles-title'>Last articles</span>
                     {
-                        lastArticles.map((article,idx) => <ArticlePreview {...article} key={idx}/> )
+                        lastArticles.map((article,idx) => <LastArticlePreview {...article} key={idx}/> )
                     }
                 </div>
             </div>
