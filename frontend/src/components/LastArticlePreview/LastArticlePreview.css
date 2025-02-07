@@ -1,0 +1,32 @@
+.last_article-preview__block {
+    display: grid;
+    grid-template-columns: 1fr 3fr 1.3fr;
+    width: 100%;
+    font-size: smaller;
+    flex-wrap: nowrap;
+    align-items: center;
+    height: 11vh;
+}
+
+.last_article-preview__block:hover {
+    background-color: white;
+    border-radius: 2vh;
+    cursor: pointer;
+    transition: background-color 0.20s ease-in-out;
+    .article-preview_main-title {
+        text-decoration: underline;
+    }
+}
+
+.last_article-preview_main-title {
+    font-size: small;
+}
+
+.last_article-preview_info {
+    text-align: right;
+}
+
+.last_article-preview_info-created_at {
+    font-size: 11px;
+}
+
