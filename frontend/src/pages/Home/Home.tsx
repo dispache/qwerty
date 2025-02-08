@@ -6,9 +6,38 @@ import { Button, ButtonProps, Pagination } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import * as colors from '@mui/material/colors';
 import ArticlePreview from '../../components/ArticlePreview/ArticlePreview';
+import axios from 'axios';
+
+type Category = {
+    id: number;
+    name: string;
+    color?: string;
+};
+
+type Article = {
+    id: number;
+    title: string;
+    text: string;
+    createdAt: string;
+    category: string;
+    author: {
+        id: number;
+        email: string;
+        login: string;
+        birthDate: string;
+        image: string;
+        role: string;
+    }
+};
+
 
 function Home() {
 
+    const [categories, setCategories] = useState<Category[]>([]);
+    
+    const [articles, setArticles] = useState<Article[]>([]);
+    const [paginationTotalCount, setPaginationTotalCount] = useState<number>(1);
+    
     const [lastArticles, setLastArticles] = useState([
         {
             title: "Last article's title and here we are hello world so",
@@ -37,58 +66,22 @@ function Home() {
             category: 'Technologies',
             createdAt: '2025-02-03'
         }
-    ]); 
-    const [categories, setCategories] = useState<{name: string, color?: string}[]>([
-        {
-            name: 'All categories'
-        },
-        {
-            name: 'Sport'
-        },
-        {
-            name: 'Fashion'
-        },
-        {
-            name: 'Technologies'
-        },
-        {
-            name: 'Technologies'
-        },
-        {
-            name: 'Technologies'
-        },
-        {
-            name: 'Technologies'
-        },
-        {
-            name: 'Technologies'
-        },
-        {
-            name: 'Technologies'
-        },
-        {
-            name: 'Technologies'
-        }
     ]);
-    const [articles, setArticles] = useState<any[]>([]);
-    const [paginationTotalCount, setPaginationTotalCount] = useState<number>(0);
-
+    
     useEffect(() => {
-        const data: any[] = new Array(20).fill({
-            title: "Last article's title and here we are hello world so",
-            author: {
-                image: 'image',
-                login: 'user_login'
-            },
-            category: 'Sport',
-            createdAt: '2025-02-03'
-        }, 0, 20);
-        setArticles(data);
-        setPaginationTotalCount(data.length / 10);
+        axios.get<Category[]>(`http://localhost:8000/categories`)
+                .then(response => {
+                    setCategories(response.data);
+                });
+        axios.get<Article[]>(`http://localhost:8000/articles`)
+                .then(response => {
+                    const { data } = response;
+                    setArticles(data);
+                    setPaginationTotalCount(Math.ceil(data.length / 10));
+                });
     }, []);
-
+    
     const muiColors: any[] = Object.values(colors);
-
 
     let i = 0;
     for (let category of categories) {
