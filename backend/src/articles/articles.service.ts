@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { ArticlesRepository } from './articles.repository';
-import { Article } from './articles.controller';
+import { ArticleEntity } from './article.entity';
 
 @Injectable()
 export class ArticlesService {
 
     constructor(private readonly articlesRepository: ArticlesRepository) {}
 
-    public getAllArticles(): Promise<Article[]> {
+    public getAllArticles(): Promise<ArticleEntity[]> {
         return this.articlesRepository.getAllArticles();
     }
 
