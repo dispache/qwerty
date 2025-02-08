@@ -1,13 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { ArticlesService } from './articles.service';
+import { ArticleEntity } from './article.entity';
 
-export type Article = {
-    id: number;
-    title: string;
-    text: string;
-    createdAt: string;
-    category: string;
-};
 
 @Controller('articles')
 export class ArticlesController {
@@ -15,7 +9,7 @@ export class ArticlesController {
     constructor(private readonly articlesService: ArticlesService) {}
 
     @Get()
-    public getAllArticles(): Promise<Article[]> {
+    public getAllArticles(): Promise<ArticleEntity[]> {
         return this.articlesService.getAllArticles();
     }
 }
