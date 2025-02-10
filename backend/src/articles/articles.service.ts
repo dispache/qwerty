@@ -11,4 +11,17 @@ export class ArticlesService {
         return this.articlesRepository.getAllArticles();
     }
 
+    public getArticlesByCategoryAndPage(categoryId: number, page: number): Promise<ArticleEntity[]> {
+        const offset = (page-1) * 10;
+        return categoryId ?
+            this.articlesRepository.getArticlesByCategoryAndPage(categoryId, offset) :
+            this.articlesRepository.getAllArticlesByPage(offset);
+    }
+
+    public getArticlesAmount(categoryId: number): Promise<number> {
+        return categoryId ? 
+            this.articlesRepository.getArticlesAmountByCategory(categoryId) :
+            this.articlesRepository.getArticlesAmount();
+    }
+
 }
