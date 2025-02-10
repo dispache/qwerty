@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 import './Home.css';
 import LastArticlePreview from '../../components/LastArticlePreview/LastArticlePreview';
@@ -30,56 +30,46 @@ type Article = {
     }
 };
 
+type ServerResponse<T> = {
+    data: T[];
+    total: number;
+};
+
 
 function Home() {
 
     const [categories, setCategories] = useState<Category[]>([]);
+    const [selectedCategory, setSelectedCategory] = useState<Category>({
+        id: 0,
+        name: 'all'
+    });
     
     const [articles, setArticles] = useState<Article[]>([]);
+    const [selectedPage, setSelectedPage] = useState<number>(1);
     const [paginationTotalCount, setPaginationTotalCount] = useState<number>(1);
     
-    const [lastArticles, setLastArticles] = useState([
-        {
-            title: "Last article's title and here we are hello world so",
-            author: {
-                image: 'image',
-                login: 'user_login'
-            },
-            category: 'Sport',
-            createdAt: '2025-02-03'
-        },
-        {
-            title: "Last article's title",
-            author: {
-                image: 'image',
-                login: 'user_login'
-            },
-            category: 'Fashion',
-            createdAt: '2025-02-03'
-        },
-        {
-            title: "Last article's title",
-            author: {
-                image: 'image',
-                login: 'user_login'
-            },
-            category: 'Technologies',
-            createdAt: '2025-02-03'
-        }
-    ]);
+    const [lastArticles, setLastArticles] = useState<Article[]>([]);
     
     useEffect(() => {
         axios.get<Category[]>(`http://localhost:8000/categories`)
                 .then(response => {
-                    setCategories(response.data);
-                });
-        axios.get<Article[]>(`http://localhost:8000/articles`)
-                .then(response => {
-                    const { data } = response;
-                    setArticles(data);
-                    setPaginationTotalCount(Math.ceil(data.length / 10));
+                    setCategories([{ id: 0, name: 'all' }, ...response.data]);
+                    setSelectedCategory({ id: 0, name: 'all' });
                 });
     }, []);
+
+    useEffect(() => {
+        const defaultUrl: string = `http://localhost:8000/articles`; 
+        const requestedUrl: string = selectedCategory.id === 0 ? 
+            defaultUrl + `?page=${selectedPage}` : 
+            defaultUrl + `?category=${selectedCategory.id}&page=${selectedPage}`; 
+        axios.get<ServerResponse<Article>>(requestedUrl)
+                .then(response => {
+                    const { data, total } = response.data;
+                    setArticles(data);
+                    setPaginationTotalCount(Math.ceil(total / 10));
+                });
+    }, [selectedCategory, selectedPage]);
     
     const muiColors: any[] = Object.values(colors);
 
@@ -88,6 +78,15 @@ function Home() {
         category.color = muiColors[i++][800];
         if (i === muiColors.length) i = 0;
     };
+
+    function handleCategoryBtnClick(category: Category): void {
+        setSelectedCategory(category);
+        setSelectedPage(1);
+    };
+
+    function handlePaginationBtnClick(_: ChangeEvent<unknown>, value: number): void {
+        setSelectedPage(value);
+    }
 
     return (
         <div className="home__block">
@@ -98,11 +97,20 @@ function Home() {
                         {
                             categories.map((category,idx) => {
                                 const ColorButton = styled(Button)<ButtonProps>(() => ({
-                                    borderColor: category.color,
-                                    color: category.color
+                                    borderColor: selectedCategory.id === category.id ?
+                                        colors.blue[800] :
+                                        category.color,
+                                    color: selectedCategory.id === category.id ?
+                                        'white' :
+                                        category.color,
+                                    backgroundColor: selectedCategory.id === category.id ?
+                                        colors.blue[800] :
+                                        ''
                                 }));
                                 return (
-                                    <li className='left_sidebar-categories-item' key={idx}>
+                                    <li className='left_sidebar-categories-item' key={idx}
+                                        onClick={() => handleCategoryBtnClick(category)}
+                                    >
                                         <ColorButton variant='outlined'>{category.name}</ColorButton>
                                     </li>
                                 )
@@ -114,11 +122,16 @@ function Home() {
             <div className='home__block-main'>
                 <div className='main-articles'>
                         {
-                            articles.slice(0, 10).map(article => <ArticlePreview {...article} />)
+                            articles.map((article,idx) => <ArticlePreview {...article} key={idx}/>)
                         }
                 </div>
                 <div className='main-articles-pagination'>
-                        <Pagination count={paginationTotalCount}/>
+                        <Pagination 
+                            count={paginationTotalCount} 
+                            onChange={handlePaginationBtnClick}
+                            color='primary'
+                            page={selectedPage}
+                        />
                 </div>
             </div>
             <div className='home__block-right_sidebar'>
