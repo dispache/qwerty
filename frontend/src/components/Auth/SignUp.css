@@ -1,0 +1,43 @@
+.sign-up__block {
+    display: flex;
+    justify-content: center;
+}
+
+.sign-up_form {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.sign-up_form-title {
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.sign-up_form-list {
+    width: 80%;
+    padding: 0 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    li {
+        margin: 10px 0px;
+    }
+    .sign-up_form-item-names {
+        display: flex;
+    }
+}
+
+.sign-up_form-item-birth-date {
+    align-self: center;
+}
+
+.sign-up_form-btns {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+

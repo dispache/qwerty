@@ -3,6 +3,7 @@ import './App.css'
 
 import Header from './components/Header/Header'
 import Home from './pages/Home/Home'
+import SignUp from './components/Auth/SignUp'
 
 function App() {
 
@@ -11,6 +12,7 @@ function App() {
       <Header />
       <Routes>
         <Route path='/' element={ <Home /> }/>
+        <Route path='/auth/sign-up' element={ <SignUp /> }/>
       </Routes>
     </BrowserRouter>
   )
