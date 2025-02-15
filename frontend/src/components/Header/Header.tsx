@@ -2,10 +2,12 @@ import { useState } from 'react';
 
 import './Header.css';
 
-import { Avatar, ListItem, ListItemIcon, ListItemText } from '@mui/material';
-import { AccountCircle, Logout, Settings } from '@mui/icons-material'
+import { Avatar, Button, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+import { AccountCircle, Login, Logout, PersonAdd, Settings } from '@mui/icons-material'
 
 function Header() {
+
+    const [authUser, setAuthUser] = useState<any>(null);
 
     const [showUserMenu, setShowUserMenu] = useState<boolean>(false); 
 
@@ -24,7 +26,7 @@ function Header() {
             </div>
             <div className='header__auth'>
                 {
-                    true ?   
+                    authUser ?   
                         <div className='header__auth-user' 
                             onMouseOver={handleMouseOverAuth} 
                             onMouseOut={handleMouseOutAuth}
@@ -35,7 +37,20 @@ function Header() {
                             />
                             <span className='header__auth-user_login'>user_login</span>
                         </div>
-                    : <div>sign in</div>
+                    : 
+                        <div className='header__auth-btns'>
+                            <Button 
+                                variant='contained' 
+                                startIcon={<Login/>}
+                                onClick={() => { window.location.href = '/auth/sign-in'}}
+                            >Sign In</Button>
+                            <Button 
+                                variant='contained' 
+                                color='error'
+                                startIcon={<PersonAdd/>}
+                                onClick={() => window.location.href = '/auth/sign-up'}
+                            >Sign Up</Button>
+                        </div>
                 }
                 {    showUserMenu ?
                         <div className='header__auth-user-menu' 
