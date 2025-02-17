@@ -12,6 +12,10 @@ export class UsersService {
         return this.usersRepository.getUserByEmail(email);
     }
 
+    public async getUserByLogin(login: string): Promise<UserEntity | null> {
+        return this.usersRepository.getUserByLogin(login);
+    }
+
     public async createUser(body: CreateUserDto): Promise<UserEntity> {
         return this.usersRepository.createUser(body);
     }

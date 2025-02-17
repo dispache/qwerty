@@ -40,6 +40,14 @@ export class UsersRepository {
         return result.length > 0 ? new UserEntity(result[0]) : null;
     }
 
+    public async getUserByLogin(login: string): Promise<UserEntity | null> {
+        const result: UserQueryResult[] = (await this.dataSource.query(
+            this.defaultUsersQuery + `where u.login=$1`,
+            [login]
+        ));
+        return result.length > 0 ? new UserEntity(result[0]) : null;
+    }
+
     public async createUser(body: CreateUserDto): Promise<UserEntity> {
         const { email, login, password, firstName, lastName, birthDate } = body;
         const result: UserQueryResult = (await this.dataSource.query(
