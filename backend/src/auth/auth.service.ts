@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UserEntity } from 'src/users/user.entity';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -10,6 +11,7 @@ export class AuthService {
 
     public async signUp(body: CreateUserDto): Promise<any> {
         let user = await this.usersService.getUserByEmail(body.email);
+        
         if (user) {
             throw new BadRequestException('Email is used');
         }
@@ -17,6 +19,10 @@ export class AuthService {
         if (user) {
             throw new BadRequestException('Login is used');
         }
+
+        const hashedPassword: string = await bcrypt.hash(body.password, 10);
+        body.password = hashedPassword;
+
         const createdUser: UserEntity = await this.usersService.createUser(body);
         return createdUser;
     }
