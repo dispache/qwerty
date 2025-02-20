@@ -8,7 +8,7 @@ type UserQueryResult = {
     id: number;
     email: string;
     login: string;
-    password: string;
+    password?: string;
     first_name: string | null;
     last_name: string | null;
     birth_date: Date | null;
@@ -18,7 +18,7 @@ type UserQueryResult = {
 @Injectable()
 export class UsersRepository {
 
-    private readonly defaultUsersQuery: string = `SELECT u.id,u.email,u.login,u.password,u.birth_date, 
+    private readonly defaultUsersQuery: string = `SELECT u.id,u.email,u.login,u.birth_date, 
         u.first_name,u.last_name,r.name as role
         FROM USERS u JOIN roles r on u.role=r.id `;
 

@@ -12,7 +12,7 @@ export class UserEntity {
         id: number;
         email: string;
         login: string;
-        password: string;
+        password?: string;
         first_name: string | null;
         last_name: string | null;
         birth_date: Date | null;
