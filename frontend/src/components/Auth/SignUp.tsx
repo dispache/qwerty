@@ -1,10 +1,12 @@
+import { Close } from '@mui/icons-material';
 import './SignUp.css';
 
 import { Button, TextField } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import 'dayjs/locale/en-gb';
+import { useState } from 'react';
 
 type SignUpDto = {
     email: string;
@@ -16,6 +18,8 @@ type SignUpDto = {
 };
 
 function SignUp() {
+
+    const [formErrors, setFormErrors] = useState<string[]>([]);
 
     function handleSignUpFormSubmit(event: any) {
         event.preventDefault();
@@ -37,9 +41,16 @@ function SignUp() {
 
         axios.post('http://localhost:8000/auth/sign-up', data)
             .then((response) => {
-                console.log(response.data);
+                alert(`Success [id=${response.data['id']}]`);
+                window.location.href = '/';
             })
-            .catch(error => console.log(error));
+            .catch(error => {
+                if (error instanceof AxiosError) {
+                    setFormErrors(error.response?.data.errors);
+                } else {
+                    setFormErrors([`Oops...something goes wrong.\nTry later.`]);
+                }
+            });
 
     }
 
@@ -75,6 +86,26 @@ function SignUp() {
                     >Create</Button>
                     <Button variant='outlined' color='error'>Reset</Button>
                 </div>
+                {
+                    formErrors.length > 0 ?
+                        <div className='sign-up_form-errors'>
+                            <div className='sign-up_form-errors_header'>
+                                <span className='sign-up_form-errors_header-title'>Registration failed</span>
+                                <div 
+                                    className='sign-up_form-errors_header-close_btn'
+                                    onClick={() => setFormErrors([])}
+                                >
+                                    <Close />
+                                </div>
+                            </div>
+                            <ul className='sign-up_form-errors_list'>
+                                {
+                                    formErrors.map((error,idx) => <li key={idx}>{error}</li>)
+                                }
+                            </ul>
+                        </div>
+                    : null
+                }
             </form>
         </div>
     );

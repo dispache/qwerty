@@ -41,3 +41,42 @@
     justify-content: space-evenly;
 }
 
+.sign-up_form-errors {
+    border: 4px solid red;
+    border-radius: 1vh;
+    background-color: rgba(100%, 20%, 10%, 70%);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 10px 10px;
+    margin: 25px 0;
+}
+
+.sign-up_form-errors_header {
+    display: grid;
+    grid-template-columns: 3fr 0.1fr;
+}
+
+.sign-up_form-errors_header-title {
+    letter-spacing: 1px;
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.sign-up_form-errors_header-close_btn {
+    display: flex;
+    justify-content: right;
+}
+
+.sign-up_form-errors_header-close_btn:hover {
+    cursor: pointer;
+}
+
+.sign-up_form-errors_list {
+    list-style: none;
+}
+
+.sign-up_form-errors_list li {
+    margin-top: 5px;
+}
