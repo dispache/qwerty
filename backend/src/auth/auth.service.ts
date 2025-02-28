@@ -13,11 +13,15 @@ export class AuthService {
         let user = await this.usersService.getUserByEmail(body.email);
         
         if (user) {
-            throw new BadRequestException('Email is used');
+            throw new BadRequestException({
+                errors: ['Email is used']
+            });
         }
         user = await this.usersService.getUserByLogin(body.login);
         if (user) {
-            throw new BadRequestException('Login is used');
+            throw new BadRequestException({
+                errors: ['Login is used']
+            });
         }
 
         const hashedPassword: string = await bcrypt.hash(body.password, 10);
