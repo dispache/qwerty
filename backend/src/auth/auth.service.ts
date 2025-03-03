@@ -3,11 +3,15 @@ import { UsersService } from 'src/users/users.service';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UserEntity } from 'src/users/user.entity';
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
 
-    constructor(private readonly usersService: UsersService) {}
+    constructor(
+        private readonly usersService: UsersService,
+        private readonly jwtService: JwtService
+    ) {}
 
     public async signUp(body: CreateUserDto): Promise<any> {
         let user = await this.usersService.getUserByEmail(body.email);
@@ -28,6 +32,15 @@ export class AuthService {
         body.password = hashedPassword;
 
         const createdUser: UserEntity = await this.usersService.createUser(body);
-        return createdUser;
+
+        const accessToken: string = this.jwtService.sign({
+            id: createdUser.id,
+            email: createdUser.email
+        });
+
+        return {
+            user: createdUser,
+            accessToken
+        };
     }
 }
