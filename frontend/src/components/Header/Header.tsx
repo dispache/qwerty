@@ -4,10 +4,14 @@ import './Header.css';
 
 import { Avatar, Button, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import { AccountCircle, Login, Logout, PersonAdd, Settings } from '@mui/icons-material'
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+import { resetAuthUser } from '../../store/auth/authSlice';
 
 function Header() {
 
-    const [authUser, setAuthUser] = useState<any>(null);
+    const authUser = useSelector((state: RootState) => state.auth.user);
+    const dispatch = useDispatch();
 
     const [showUserMenu, setShowUserMenu] = useState<boolean>(false); 
 
@@ -17,6 +21,11 @@ function Header() {
 
     function handleMouseOutAuth() {
         setShowUserMenu(false);
+    };
+
+    function handleSignOutBtnClick() {
+        dispatch<any>(resetAuthUser());
+        window.location.reload();
     };
 
     return (
@@ -35,7 +44,7 @@ function Header() {
                                 alt="Remy Sharp" src="/static/images/avatar/1.jpg" 
                                 className='header__auth-user_image'
                             />
-                            <span className='header__auth-user_login'>user_login</span>
+                            <span className='header__auth-user_login'>{authUser.login}</span>
                         </div>
                     : 
                         <div className='header__auth-btns'>
@@ -70,7 +79,9 @@ function Header() {
                                 </span>
                             </ListItem>
                             <ListItem>
-                                <span className='header__auth-user-menu_item'>
+                                <span className='header__auth-user-menu_item'
+                                    onClick={handleSignOutBtnClick}
+                                >
                                 <ListItemIcon><Logout /></ListItemIcon>
                                     <ListItemText>Sign out</ListItemText>
                                 </span>

@@ -7,6 +7,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import axios, { AxiosError } from 'axios';
 import 'dayjs/locale/en-gb';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setAuthUser } from '../../store/auth/authSlice';
 
 type SignUpDto = {
     email: string;
@@ -20,6 +22,8 @@ type SignUpDto = {
 function SignUp() {
 
     const [formErrors, setFormErrors] = useState<string[]>([]);
+
+    const dispatch = useDispatch();
 
     function handleSignUpFormSubmit(event: any) {
         event.preventDefault();
@@ -41,7 +45,7 @@ function SignUp() {
 
         axios.post('http://localhost:8000/auth/sign-up', data)
             .then((response) => {
-                alert(`Success [id=${response.data['id']}]`);
+                dispatch<any>(setAuthUser(response.data));
                 window.location.href = '/';
             })
             .catch(error => {
